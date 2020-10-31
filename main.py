@@ -64,7 +64,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 @app.get("/users/{user_email}", response_model=schemas.BaseModel)
 def get_projects_by_email(user_email: str, db: Session = Depends(get_db)):
-    db_project = crud.get_user_by_email(db, user_email=user_email)
+    db_project = crud.get_user_by_email(db, email=user_email)
     if db_project is None:
         raise HTTPException(status_code=404, detail="El usuario no participa de ningún proyecto")
     return db_project
