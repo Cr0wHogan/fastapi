@@ -62,7 +62,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
     return db_project
 
-@app.get("/users/{email}", response_model=schemas.UserBase)
+@app.get("/users/{email}", response_model=schemas.BaseModel)
 def get_projects_by_email(email: str, db: Session = Depends(get_db)):
     db_project = crud.get_user_by_email(db, email=email)
     if db_project is None:
