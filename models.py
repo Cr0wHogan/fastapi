@@ -10,8 +10,8 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     #hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
-    
-    projects = relationship("Architectures", back_populates="owner")
+   
+    projects = relationship("Project", back_populates="owner")
 
 
 class Project(Base):
