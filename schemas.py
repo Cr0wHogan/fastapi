@@ -1,16 +1,16 @@
 from typing import List, Optional
 
 from pydantic import BaseModel
-class ItemBase(BaseModel):
+class ProjectBase(BaseModel):
     title: str
     description: Optional[str] = None
 
 
-class ItemCreate(ItemBase):
+class ProjectCreate(ProjectBase):
     pass
 
 
-class Item(ItemBase):
+class Project(ProjectBase):
     id: int
     owner_id: int
 
@@ -23,13 +23,13 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    password: str
-
+    #password: str
+    pass
 
 class User(UserBase):
     id: int
     is_active: bool
-    items: List[Item] = []
+    projects: List[Project] = []
 
     class Config:
         orm_mode = True

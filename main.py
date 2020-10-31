@@ -2,7 +2,6 @@
 from typing import List
 
 from fastapi import Depends, FastAPI, HTTPException
-
 from sqlalchemy.orm import Session
 
 import crud, models, schemas
@@ -43,14 +42,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@app.post("/users/{user_id}/items/", response_model=schemas.Item)
-def create_item_for_user(
-    user_id: int, item: schemas.ItemCreate, db: Session = Depends(get_db)
+@app.post("/users/{user_id}/projects/", response_model=schemas.Project)
+def create_project_for_user(
+    user_id: int, project: schemas.ProjectCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_item(db=db, item=item, user_id=user_id)
+    return crud.create_user_project(db=db, project=project, user_id=user_id)
 
 
-@app.get("/items/", response_model=List[schemas.Item])
-def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    items = crud.get_items(db, skip=skip, limit=limit)
-    return items
+@app.get("/projects/", response_model=List[schemas.Project])
+def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    projects = crud.get_projects(db, skip=skip, limit=limit)
+    return projects
