@@ -65,5 +65,3 @@ def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="El usuario no participa de ningún proyecto")
     return db_user
-
-
