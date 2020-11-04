@@ -75,9 +75,9 @@ def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
 
 
 @app.post("/project/add/{project_id}/{user_id}", response_model=schemas.Project)
-def create_project_for_user(
+def add_user_to_project(
     user_id: int, project: schemas.ProjectCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_project(db=db, project=project,project_id=project_id, user_id=user_id)
+    return crud.add_user_to_existent_project(db=db, project=project,project_id=project_id, user_id=user_id)
 
 
