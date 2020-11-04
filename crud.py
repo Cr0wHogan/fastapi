@@ -35,11 +35,3 @@ def create_user_project(db: Session, project: schemas.ProjectCreate, user_id: in
     db.commit()
     db.refresh(db_project)
     return db_project
-
-
-def add_user_to_existent_project(db: Session, project: schemas.ProjectBase, project_id:int ,user_id: int):
-    db_item = models.Project(**Project.dict(), id=project_id)
-    db.add(user_id)
-    db.commit()
-    db.refresh(db_item)
-    return db_item
