@@ -5,7 +5,7 @@ from database import Base
 
 association_table = Table('association', Base.metadata,
     Column('users_id', Integer, ForeignKey('users.id')),
-    Column('Architectures_id', Integer, ForeignKey('users.id'))
+    Column('Architectures_id', Integer, ForeignKey('Architectures.id'))
 )
 
 class User(Base):
@@ -25,7 +25,7 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
-    #owner_id = Column(Integer, ForeignKey("users.id"))
+    owner_id = Column(Integer, ForeignKey("users.id"))
    
     owner = relationship("User", secondary=association_table, back_populates="projects")
 
