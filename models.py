@@ -24,3 +24,7 @@ class Project(Base):
     
     owner = relationship("User", back_populates="projects")
 
+#class Projects(Base):
+ #   __tablename__ = "Projects"
+  #  id = Column(Integer, primary_key=True, ForeignKey("users.id"))
+   # project = Column(Integer, primary_key=True, ForeignKey("Architectures.id"))
