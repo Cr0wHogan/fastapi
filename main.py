@@ -15,9 +15,19 @@ app = FastAPI()
 def get_db():
     db = SessionLocal()
     try:
-        yield db
+        #yield db
+        connection = db.connect(user = "nzzkycbeudadzf",
+                                        password = "1a4c6464992f23a5165e4a6bc77668a7b0254bfb1b6025d863112a8bc0f4ed82",
+                                        host = "ec2-54-147-126-202.compute-1.amazonaws.com",
+                                        port = "5432",
+                                        database = "da9er1ajr80t88")
+        cursor = connection.cursor()
     finally:
-        db.close()
+        if(connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
+        
 
 
 @app.post("/users/", response_model=schemas.User)
