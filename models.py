@@ -16,15 +16,15 @@ class User(Base):
     #hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
    
-    projects = relationship("Project", secondary=project_user_table, back_populates="team")
+    projects = relationship("Project", secondary=project_user_table)
 
 
 class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
+    title = Column(String)
+    description = Column(String)
     #owner_id = Column(Integer, ForeignKey("users.id"))
    
-    team = relationship("User", secondary=project_user_table, back_populates="projects")
+    #team = relationship("User", secondary=project_user_table)

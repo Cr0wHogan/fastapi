@@ -15,7 +15,7 @@ class ProjectCreate(ProjectBase):
 
 class Project(ProjectBase):
     id: int
-    owner_id: int
+    #team: List[User] = []
 
     class Config:
         orm_mode = True
@@ -36,3 +36,4 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+        
