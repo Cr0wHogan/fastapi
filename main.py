@@ -51,9 +51,9 @@ def create_project_for_user(
 ):
     return crud.create_user_project(db=db, project=project, user_id=user_id)
 
-# Create project
+# Join
 @app.get("/users/{user_id}/projects/{project_id}", response_model=schemas.Project)
-def create_project_for_user(
+def join_project_user(
     user_id: int, project_id: int, db: Session = Depends(get_db)
 ):
     return crud.add_user_to_project(db=db, project_id=project_id, user_id=user_id)
