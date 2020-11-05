@@ -1,10 +1,13 @@
 from typing import List, Optional
-
 from pydantic import BaseModel
+
+# PROJECT TABLE
 class ProjectBase(BaseModel):
     title: str
     description: Optional[str] = None
 
+    class Config:
+        orm_mode = True
 
 class ProjectCreate(ProjectBase):
     pass
@@ -17,7 +20,7 @@ class Project(ProjectBase):
     class Config:
         orm_mode = True
 
-
+# USER TABLE
 class UserBase(BaseModel):
     email: str
 

@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from database import Base
 
-association_table = Table('association', Base.metadata,
+project_user_table = Table('association', Base.metadata,
     Column('users_id', Integer, ForeignKey('users.id')),
     Column('projects_id', Integer, ForeignKey('projects.id'))
 )
@@ -16,7 +16,7 @@ class User(Base):
     #hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
    
-    projects = relationship("Project", secondary=association_table, back_populates="owner")
+    projects = relationship("Project", secondary=project_user_table, back_populates="team")
 
 
 class Project(Base):
@@ -25,6 +25,6 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    #owner_id = Column(Integer, ForeignKey("users.id"))
    
-    owner = relationship("User", secondary=association_table, back_populates="projects")
+    team = relationship("User", secondary=project_user_table, back_populates="projects")
