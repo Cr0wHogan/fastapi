@@ -56,6 +56,13 @@ def create_project_for_user(
 def join_project_user(
     user_id: int, project_id: int, db: Session = Depends(get_db)
 ):
+    db_user = crud.get_user(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
+    db_project = crud.get_project(db, project_id=project_id)
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="Proyecto no encontrado")
+
     return crud.add_user_to_project(db=db, project_id=project_id, user_id=user_id)
 
 # Get all projects
