@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 # Atributes Table
 class AtributesBase(BaseModel):
-    name: Optional[str] = None
+    name: str
 
     class Config:
         orm_mode = True

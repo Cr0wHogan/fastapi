@@ -8,14 +8,10 @@ project_user_table = Table('association', Base.metadata,
     Column('projects_id', Integer, ForeignKey('projects.id'))
 )
 
-project_atribute_table=Table('association', Base.metadata,
-    Column('atributes_id', Integer, ForeignKey('atributes.id')),
-    Column('projects_id', Integer, ForeignKey('projects.id'))
-)
-
 class Atributes(Base):
     __tablename__ = "atributes" 
     id = Column(Integer, primary_key=True, index=True)
+    project_id = Column(Integer, ForeignKey("projects.id"))
     description= Column(String) 
 
 class User(Base):
@@ -34,6 +30,5 @@ class Project(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)
     description = Column(String)
-    #owner_id = Column(Integer, ForeignKey("users.id"))
     #team = relationship("User", secondary=project_user_table)
-    atributes = relationship("Atributes", secondary=project_atribute_table) 
+    atributes = relationship("Atributes", back_ref="projects") 
