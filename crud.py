@@ -59,3 +59,16 @@ def add_user_to_project(db: Session, project_id: int, user_id: int):
     db.refresh(user)
     db.refresh(project)
     return project
+
+
+def create_attribute_template(db: Session, attribute_template: schemas.AttributeTemplateCreate):
+    #fake_hashed_password = user.password + "notreallyhashed"
+    db_attribute_template = models.AttributeTemplate(**attribute_template.dict())#, hashed_password=fake_hashed_password)
+    db.add(db_attribute_template)
+    db.commit()
+    db.refresh(db_attribute_template)
+    return db_attribute_template
+
+
+def get_attribute_templates(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.AttributeTemplate).offset(skip).limit(limit).all()

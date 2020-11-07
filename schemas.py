@@ -1,19 +1,30 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-# Atributes Table
-class AtributesBase(BaseModel):
+# Attribute Template Table
+class AttributeTemplateBase(BaseModel):
     name: str
+    description: str
 
+class AttributeTemplateCreate(AttributeTemplateBase):
+    pass
+
+class AttributeTemplate(AttributeTemplateBase):
+    id: int
     class Config:
         orm_mode = True
 
-class AtributesCreate(AtributesBase):
+# Attribute Table
+class AttributeBase(BaseModel):
+    prioridad: int
+
+class AttributeCreate(AttributeBase):
     pass
 
-class Atributes(AtributesBase):
+class Attribute(AttributeBase):
     id: int
-    description: str
+    template_id: int
+    project_id: int
     class Config:
         orm_mode = True
 
@@ -31,7 +42,7 @@ class ProjectCreate(ProjectBase):
 class Project(ProjectBase):
     id: int
     #team: List[User] = []
-    atributes: List[Atributes] = [] 
+    attributes: List[Attribute] = [] 
     class Config:
         orm_mode = True
 

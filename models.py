@@ -8,11 +8,18 @@ project_user_table = Table('association', Base.metadata,
     Column('projects_id', Integer, ForeignKey('projects.id'))
 )
 
-class Atributes(Base):
-    __tablename__ = "atributes" 
+class AttributeTemplate(Base):
+    __tablename__ = "attributes_templates" 
+    id = Column(Integer, primary_key=True, index=True)
+    name= Column(String) 
+    description= Column(String) 
+
+class Attribute(Base):
+    __tablename__ = "attributes" 
     id = Column(Integer, primary_key=True, index=True)
     project_id = Column(Integer, ForeignKey("projects.id"))
-    description= Column(String) 
+    template_id = Column(Integer, ForeignKey("attributes_templates.id"))
+    prioridad = Column(Integer)
 
 class User(Base):
     __tablename__ = "users"
@@ -31,4 +38,4 @@ class Project(Base):
     title = Column(String)
     description = Column(String)
     #team = relationship("User", secondary=project_user_table)
-    atributes = relationship("Atributes", back_ref="projects") 
+    attributes = relationship("Attribute", backref="projects") 

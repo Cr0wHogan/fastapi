@@ -22,6 +22,11 @@ def get_db():
     finally:
         db.close()
         
+
+# # # # # # # 
+#   USERS   #
+# # # # # # # 
+
 # Create users
 @app.post("/users/create", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
@@ -43,6 +48,18 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     if db_user is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return db_user
+
+# Get user by email
+@app.get("/users/email/{user_email}", response_model=schemas.User)
+def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_email(db, email=user_email)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="El usuario no participa de ningún proyecto")
+    return db_user
+
+# # # # # # # 
+#  PROJECTS #
+# # # # # # # 
 
 # Create project
 @app.post("/users/{user_id}/projects/create", response_model=schemas.Project)
@@ -81,10 +98,19 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
     return db_project
 
-# Get user by email
-@app.get("/users/email/{user_email}", response_model=schemas.User)
-def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user_email)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="El usuario no participa de ningún proyecto")
-    return db_user
+
+# # # # # # # # # 
+#  ATTRIBUTES   #
+# # # # # # # # #
+
+
+# Create attribute template
+@app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
+def create_user(attribute_template: schemas.AttributeTemplateCreate, db: Session = Depends(get_db)):
+    return crud.create_attribute_template(db=db, attribute_template=attribute_template)
+
+# Get all attribute templates
+@app.get("/attribute_templates/", response_model=List[schemas.AttributeTemplate])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    templates = crud.get_attribute_templates(db, skip=skip, limit=limit)
+    return templates
