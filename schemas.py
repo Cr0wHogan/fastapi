@@ -1,17 +1,15 @@
 from typing import List, Optional
 from pydantic import BaseModel
 
-# Requeriment Table
-class RequerimentBase(BaseModel):
+# Requirement Table
+class RequirementBase(BaseModel):
     name:str 
     attribute_id:int
-    class Config:
-        orm_mode = True
 
-class RequerimentCreate(RequerimentBase):
+class RequirementCreate(RequirementBase):
     pass
 
-class Requeriment(RequerimentBase):
+class Requirement(RequirementBase):
     id: int
     class Config:
         orm_mode = True
@@ -39,7 +37,8 @@ class Attribute(AttributeBase):
     id: int
     template_id: int
     project_id: int
-    requeriments:List[Requeriment]=[]
+    requirements:List[Requirement]=[]
+    template: AttributeTemplate
     class Config:
         orm_mode = True
 
