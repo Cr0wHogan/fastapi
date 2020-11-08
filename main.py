@@ -106,11 +106,27 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 
 # Create attribute template
 @app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
-def create_user(attribute_template: schemas.AttributeTemplateCreate, db: Session = Depends(get_db)):
+def create_template(attribute_template: schemas.AttributeTemplateCreate, db: Session = Depends(get_db)):
     return crud.create_attribute_template(db=db, attribute_template=attribute_template)
 
 # Get all attribute templates
 @app.get("/attribute_templates/", response_model=List[schemas.AttributeTemplate])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def read_templates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     templates = crud.get_attribute_templates(db, skip=skip, limit=limit)
     return templates
+
+# Get all attributes
+@app.get("/attributes/", response_model=List[schemas.Attribute])
+def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    attributes = crud.get_attributes(db, skip=skip, limit=limit)
+    return attributes
+
+# Create attribute from template
+@app.post("/attribute/create/{template_id}/{project_id}", response_model=schemas.Attribute)
+def create_attribute(template_id: int,project_id: int,attribute: schemas.AttributeCreate, db: Session = Depends(get_db)):
+    return crud.create_attribute_from_template_and_add_it_to_a_project(db=db, attribute=attribute,template_id=template_id,project_id=project_id)
+
+# Create requeriment
+@app.post("/requeriment/create/{attribute_id}", response_model=schemas.RequerimentCreate)
+def create_requeriment(attribute_id:int,requeriment: schemas.RequerimentCreate, db: Session = Depends(get_db)):
+    return crud.create_requeriment(db=db, requeriment=requeriment,attribute_id=attribute_id)

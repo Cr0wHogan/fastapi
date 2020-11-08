@@ -52,14 +52,12 @@ def add_user_to_project(db: Session, project_id: int, user_id: int):
     user = db.query(models.User).filter(models.User.id == user_id).first()
     # Traigo el objeto usuario que lo creo
     project = db.query(models.Project).filter(models.Project.id == project_id).first()
-    
     user.projects.append(project)
     # Lo agrego a la base
     db.commit()
     db.refresh(user)
     db.refresh(project)
     return project
-
 
 def create_attribute_template(db: Session, attribute_template: schemas.AttributeTemplateCreate):
     #fake_hashed_password = user.password + "notreallyhashed"
@@ -69,6 +67,29 @@ def create_attribute_template(db: Session, attribute_template: schemas.Attribute
     db.refresh(db_attribute_template)
     return db_attribute_template
 
-
 def get_attribute_templates(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.AttributeTemplate).offset(skip).limit(limit).all()
+
+def get_attributes(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Attribute).offset(skip).limit(limit).all()
+
+
+# Un atributo existente 
+def create_attribute_from_template_and_add_it_to_a_project(db: Session, attribute: schemas.AttributeCreate,template_id: int,project_id:int):
+    # Creo el atributo
+    db_attribute = models.Attribute(**attribute.dict(),template_id=template_id,project_id=project_id)
+    # Lo agrego a la base
+    db.add(db_attribute)
+    # Commit y refresh
+    db.commit()
+    db.refresh(db_attribute)
+    return db_attribute
+
+def create_requeriment(db: Session, requeriment: schemas.RequerimentCreate,attribute_id:int):
+    db_requeriment = models.Requeriment(**requeriment.dict(),attribute_id=attribute_id)
+    #attribute=db.query(models.Attribute).filter(models.Attribute.id == attribute_id).first()
+    #attribute.requeriments.append(db_requeriment)
+    db.add(db_requeriment)
+    db.commit()
+    db.refresh(db_requeriment)
+    return db_requeriment 
