@@ -130,22 +130,29 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     if db_project is None:
         raise HTTPException(status_code=404, detail="El proyecto no existe")
 
-    #Creo un atributo al proyecto desde su respectivo template
-    # TODO: Primero busco en los atributos del projecto si alguno tiene el mismo atribute template que db_template
-    
-        # si lo encuentro -> prioridad + 1
-
-    # si no lo encuentro ->
-    db_attribute = models.Attribute(template_id=db_template.id,project_id=project_id,prioridad=0)
-    db.add(db_attribute)
-    db.commit()
-    db.refresh(db_attribute)
-    
-    # añadir requerimiento al atributo y ¿¿¿ sumar uno a prioridad # update ????
-    db_requirement = models.Requirement(description=requirement_text,attribute_id=db_attribute.id)
-    db.add(db_requirement)
-    db.commit()
-    db.refresh(db_requirement)
+    # Primero busco en los atributos del projecto, si alguno tiene el mismo atribute template que db_template
+    for attribute in db_project.attributes:
+        if attribute.template_id == db_template.id:
+            # si lo encuentro -> prioridad + 1
+            attribute.prioridad=attribute.prioridad+1
+            db.commit()
+            db.refresh(attribute)
+            # añadir requerimiento al atributo y ¿¿¿ sumar uno a prioridad # update ????
+            db_requirement = models.Requirement(description=requirement_text,attribute_id=attribute.id)
+            db.add(db_requirement)
+            db.commit()
+            db.refresh(db_requirement)
+        else:
+            # si no lo encuentro ->  Creo un atributo al proyecto desde su respectivo template
+            db_attribute = models.Attribute(template_id=db_template.id,project_id=project_id,prioridad=0)
+            db.add(db_attribute)
+            db.commit()
+            db.refresh(db_attribute)
+            # añadir requerimiento al atributo y ¿¿¿ sumar uno a prioridad # update ????
+            db_requirement = models.Requirement(description=requirement_text,attribute_id=db_attribute.id)
+            db.add(db_requirement)
+            db.commit()
+            db.refresh(db_requirement)
     return db_project
 
 # # # # # # # # # # # # # #
