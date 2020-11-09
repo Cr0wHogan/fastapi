@@ -90,16 +90,16 @@ def get_attribute_by_id(db: Session, attribute_id:str):
     return db.query(models.Attribute).filter(models.Attribute.id == attribute_id).first()
 
 def get_or_create_attribute_with_template(db:Session,db_project:models.Project,template_id:int):
-     for attribute in db_project.attributes:
+    for attribute in db_project.attributes:
         if attribute.template_id == template_id:
             return attribute
-        else:
-            # si no lo encuentro ->  Creo un atributo al proyecto desde su respectivo template
-            db_attribute = models.Attribute(template_id=template_id.id,project_id=db_project.id,prioridad=0)
-            db.add(db_attribute)
-            db.commit()
-            db.refresh(db_attribute)
-            return attribute
+            
+    # si no lo encuentro ->  Creo un atributo al proyecto desde su respectivo template
+    db_attribute = models.Attribute(template_id=template_id.id,project_id=db_project.id,prioridad=0)
+    db.add(db_attribute)
+    db.commit()
+    db.refresh(db_attribute)
+    return db_attribute
 
 def add_requirement_to_attribute(db:Session,db_attribute:models.Attribute, requirement_text: str):
     # si lo encuentro -> prioridad + 1
