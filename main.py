@@ -137,7 +137,7 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     db.refresh(db_attribute)
     
     # añadir requerimiento al atributo y ¿¿¿ sumar uno a prioridad # update ????
-    db_requirement = models.Requirement(description=requirement_text,atribute_id=db_attribute.id)
+    db_requirement = models.Requirement(description=requirement_text,attribute_id=db_attribute.id)
     db.add(db_requirement)
     db.commit()
     db.refresh(db_requirement)
