@@ -21,7 +21,6 @@ def get_db():
         yield db
     finally:
         db.close()
-        
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 #   USERS   
@@ -34,7 +33,6 @@ def get_db():
 #      TODO: /users/update                    POST
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-
 
 # Create users
 @app.post("/users/create", response_model=schemas.User)
@@ -116,10 +114,34 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
     return db_project
 
-# add attribute (requirement_text, attribute_name, project_id)
-# traer el template por attribute name # filter
-# crear atributo con project_id y template_id  # create
-# agregar requerimiento a atributo y sumar uno a prioridad # update 
+# Add attribute
+@app.get("/projects/add_attribute", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
+def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:str,db: Session = Depends(get_db)):
+    # traer el template por attribute name #filter
+    db_template = crud.get_attribute_template_by_name(db, name=attribute_name)
+
+    #Chequeo que exista el template especificado
+    if db_template is None:
+        raise HTTPException(status_code=404, detail="El template del atributo no existe")
+    # crear atributo con project_id y template_id  
+    db_project= crud.get_project(db, project_id=project_id)
+
+    #Chequeo que exista el proyecto
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="El proyecto no existe")
+
+    #Creo un atributo al proyecto desde su respectivo template
+    db_attribute = models.Attribute(template_id=db_template.id,project_id=project_id)
+    db.add(db_attribute)
+    db.commit()
+    db.refresh(db_attribute)
+    
+    # añadir requerimiento al atributo y ¿¿¿ sumar uno a prioridad # update ????
+    db_requirement = models.Requirement(description=requirement_text,atribute_id=db_attribute.id)
+    db.add(db_requirement)
+    db.commit()
+    db.refresh(db_requirement)
+    return db_project
 
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
@@ -137,9 +159,13 @@ def read_templates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db
     templates = crud.get_attribute_templates(db, skip=skip, limit=limit)
     return templates
 
-# get id
+# Get template by id
+@app.get("/attribute_templates/get/id/{attribute_template_id}", response_model=schemas.AttributeTemplate)
+def read_attribute_template_by_id(attribute_template_id:str, db: Session = Depends(get_db)):
+    template = crud.get_attribute_template_by_id(db,attribute_template_id=attribute_template_id)
+    return template
 
-#Get template attribute id
+#Get template attribute by name
 @app.get("/attribute_templates/get/name/{name}", response_model=schemas.AttributeTemplate)
 def get_template_by_name(name: str, db: Session = Depends(get_db)):
     db_template = crud.get_attribute_template_by_name(db, name=name)
@@ -162,7 +188,11 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     attributes = crud.get_attributes(db, skip=skip, limit=limit)
     return attributes
 
-# get id
+# Get attribute by id
+@app.get("/attributes/get/id/{attribute_id}", response_model=schemas.Attribute)
+def read_attribute_by_id(attribute_id:str, db: Session = Depends(get_db)):
+    attribute = crud.get_attribute_by_id(db,attribute_id=attribute_id)
+    return attribute
 
 # # # # # # # # # 
 #  REQUIREMENTS #
@@ -173,6 +203,15 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 def create_requirement(requirement: schemas.RequirementCreate, db: Session = Depends(get_db)):
     return crud.create_requirement(db=db, requirement=requirement)
 
-# get
+# Get all requirements
+@app.get("/requirements/get", response_model=List[schemas.Requirement])
+def read_requirements(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    requirements = crud.get_requirements(db, skip=skip, limit=limit)
+    return requirements
 
-# get id
+# Get requirement by id
+@app.get("/requirements/get/id/{requirement_id}", response_model=schemas.Requirement)
+def read_requirement_by_id(requirement_id:str,db: Session = Depends(get_db)):
+    requirement = crud.get_requirement_by_id(db,requirement_id = requirement_id)
+    return requirement
+

@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 # Requirement Table
 class RequirementBase(BaseModel):
-    name:str 
+    description:str 
     attribute_id:int
 
 class RequirementCreate(RequirementBase):

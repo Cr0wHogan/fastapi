@@ -59,6 +59,8 @@ def add_user_to_project(db: Session, project_id: int, user_id: int):
     db.refresh(project)
     return project
 
+#Attribute templates
+
 def create_attribute_template(db: Session, attribute_template: schemas.AttributeTemplateCreate):
     #fake_hashed_password = user.password + "notreallyhashed"
     db_attribute_template = models.AttributeTemplate(**attribute_template.dict())#, hashed_password=fake_hashed_password)
@@ -67,11 +69,25 @@ def create_attribute_template(db: Session, attribute_template: schemas.Attribute
     db.refresh(db_attribute_template)
     return db_attribute_template
 
+def get_attribute_template_by_id(db: Session, attribute_template_id:int):
+    return db.query(models.AttributeTemplate).filter(models.AttributeTemplate.id == attribute_template_id).first()
+
+def get_attribute_template_by_name(db: Session, name:str):
+    db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.name == name).first()
+    return db_template
+
 def get_attribute_templates(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.AttributeTemplate).offset(skip).limit(limit).all()
 
+
+
+#Attributes
+
 def get_attributes(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Attribute).offset(skip).limit(limit).all()
+
+def get_attribute_by_id(db: Session, attribute_id:str):
+    return db.query(models.Attribute).filter(models.Attribute.id == attribute_id).first()
 
 
 # Un atributo existente 
@@ -94,7 +110,8 @@ def create_requirement(db: Session, requirement: schemas.RequirementCreate):
     db.refresh(db_requirement)
     return db_requirement 
 
-def get_attribute_template_by_name(db: Session, name:str):
-    db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.name == name).first()
-    return db_template
+def get_requirement_by_id(db: Session, requirement_id:str):
+    return db.query(models.Requirement).filter(models.Requirement.id == requirement_id).first()
 
+def get_requirements(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Requirement).offset(skip).limit(limit).all()
