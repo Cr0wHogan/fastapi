@@ -12,7 +12,7 @@ class Requirement(Base):
     __tablename__ = "requirements"
     id = Column(Integer, primary_key=True, index=True)
     attribute_id = Column(Integer, ForeignKey("attributes.id"))
-    name = Column(String)
+    description = Column(String)
 
 class AttributeTemplate(Base):
     __tablename__ = "attributes_templates" 
