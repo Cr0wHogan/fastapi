@@ -112,8 +112,6 @@ def get_template_by_name(attribute_templates_name: str, db: Session = Depends(ge
         raise HTTPException(status_code=404, detail="La plantilla de atributo no existe")
     return db_template
 
-
-
 # Create attribute template
 @app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
 def create_template(attribute_template: schemas.AttributeTemplateCreate, db: Session = Depends(get_db)):
