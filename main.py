@@ -133,7 +133,7 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     db_attribute = crud.get_or_create_attribute_with_template(db=db,db_project=db_project,template_id=db_template.id)
     
     # Agrego el requerimiento al atributo
-    db_requirement = crud.add_requirement_to_attribute(db=db,db_attribute=db_attribute,requirement_text)
+    db_requirement = crud.add_requirement_to_attribute(db,db_attribute,requirement_text)
     
     return db_project
 
