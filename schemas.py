@@ -28,15 +28,15 @@ class AttributeTemplate(AttributeTemplateBase):
 
 # Attribute Table
 class AttributeBase(BaseModel):
-    prioridad: int
+    prioridad: Optional[int] = 0
+    template_id: int
+    project_id: int
 
 class AttributeCreate(AttributeBase):
     pass
 
 class Attribute(AttributeBase):
     id: int
-    template_id: int
-    project_id: int
     requirements:List[Requirement]=[]
     template: AttributeTemplate
     class Config:

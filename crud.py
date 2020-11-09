@@ -30,14 +30,14 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
 
 
 # Un usuario crea un proyecto
-def create_user_project(db: Session, project: schemas.ProjectCreate, user_id: int):
+def create_user_project(db: Session, project: schemas.ProjectCreate):
     # Creo el proyecto
     db_project = models.Project(**project.dict())
     # Traigo el objeto usuario que lo creo
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+    #user = db.query(models.User).filter(models.User.id == user_id).first()
     # Agrego el usuario a la tabla de asociacion de projectos y rezo que se agregue en ambos
     #db_project.team.append(user)
-    user.projects.append(db_project)
+    #user.projects.append(db_project)
     # Lo agrego a la base
     db.add(db_project)
     # Commit y refresh
@@ -75,9 +75,9 @@ def get_attributes(db: Session, skip: int = 0, limit: int = 100):
 
 
 # Un atributo existente 
-def create_attribute_from_template_and_add_it_to_a_project(db: Session, attribute: schemas.AttributeCreate,template_id: int,project_id:int):
+def create_attribute_from_template(db: Session, attribute: schemas.AttributeCreate):
     # Creo el atributo
-    db_attribute = models.Attribute(**attribute.dict(),template_id=template_id,project_id=project_id)
+    db_attribute = models.Attribute(**attribute.dict())
     # Lo agrego a la base
     db.add(db_attribute)
     # Commit y refresh

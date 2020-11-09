@@ -23,9 +23,18 @@ def get_db():
         db.close()
         
 
-# # # # # # # 
-#   USERS   #
-# # # # # # # 
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#   USERS   
+#
+#      /users/create                    POST
+#      /users/get/                      GET
+#      /users/get/id/{user_id}          GET
+#      /users/get/email/{user_id}       GET
+#      TODO: /users/delete                    GET
+#      TODO: /users/update                    POST
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
 
 # Create users
 @app.post("/users/create", response_model=schemas.User)
@@ -36,13 +45,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 # Get all users
-@app.get("/users/", response_model=List[schemas.User])
+@app.get("/users/get", response_model=List[schemas.User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
 
 # Get user by id
-@app.get("/users/{user_id}", response_model=schemas.User)
+@app.get("/users/get/id/{user_id}", response_model=schemas.User)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
@@ -50,26 +59,35 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 # Get user by email
-@app.get("/users/email/{user_email}", response_model=schemas.User)
+@app.get("/users/get/email/{user_email}", response_model=schemas.User)
 def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user_email)
     if db_user is None:
-        raise HTTPException(status_code=404, detail="El usuario no participa de ningún proyecto")
+        raise HTTPException(status_code=404, detail="Usuario no encontrado")
     return db_user
 
-# # # # # # # 
-#  PROJECTS #
-# # # # # # # 
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+#   PROJECTS   
+#
+#      /projects/create                     POST
+#      /projects/join                       PUT (user_id, project_id)
+#      /proects/get                         GET
+#      /projects/get/{project_id}           GET
+#      TODO: /projects/delete               GET
+#      TODO: /projects/update               POST
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
 
 # Create project
-@app.post("/users/{user_id}/projects/create", response_model=schemas.Project)
+@app.post("/projects/create", response_model=schemas.Project)
 def create_project_for_user(
-    user_id: int, project: schemas.ProjectCreate, db: Session = Depends(get_db)
+    project: schemas.ProjectCreate, db: Session = Depends(get_db)
 ):
-    return crud.create_user_project(db=db, project=project, user_id=user_id)
+    return crud.create_user_project(db=db, project=project)
 
 # Join
-@app.get("/users/{user_id}/projects/{project_id}", response_model=schemas.Project)
+@app.put("/projects/join", status_code=200)
 def join_project_user(
     user_id: int, project_id: int, db: Session = Depends(get_db)
 ):
@@ -84,14 +102,14 @@ def join_project_user(
 
 # Get all projects
 # TODO: agregarle el team (join query)
-@app.get("/projects/", response_model=List[schemas.Project])
+@app.get("/projects/get", response_model=List[schemas.Project])
 def read_projects(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     projects = crud.get_projects(db, skip=skip, limit=limit)
     return projects
 
 # Get one project by id
 # TODO: agregarle el team (join query)
-@app.get("/projects/{project_id}", response_model=schemas.Project)
+@app.get("/projects/get/{project_id}", response_model=schemas.Project)
 def get_project(project_id: int, db: Session = Depends(get_db)):
     db_project = crud.get_project(db, project_id=project_id)
     if db_project is None:
@@ -99,18 +117,10 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
     return db_project
 
 
-# # # # # # # # # 
-#  ATTRIBUTES   #
-# # # # # # # # #
+# # # # # # # # # # # # # #
+#  ATTRIBUTES TEMPLATES   #
+# # # # # # # # # # # # # # 
 
-
-#Get template attribute id
-@app.get("/attribute_templates/get/{attribute_templates_name}", response_model=schemas.AttributeTemplate)
-def get_template_by_name(attribute_templates_name: str, db: Session = Depends(get_db)):
-    db_template = crud.get_attribute_template_by_name(db, name=attribute_templates_name)
-    if db_template is None:
-        raise HTTPException(status_code=404, detail="La plantilla de atributo no existe")
-    return db_template
 
 # Create attribute template
 @app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
@@ -118,24 +128,36 @@ def create_template(attribute_template: schemas.AttributeTemplateCreate, db: Ses
     return crud.create_attribute_template(db=db, attribute_template=attribute_template)
 
 # Get all attribute templates
-@app.get("/attribute_templates/", response_model=List[schemas.AttributeTemplate])
+@app.get("/attribute_templates/get", response_model=List[schemas.AttributeTemplate])
 def read_templates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     templates = crud.get_attribute_templates(db, skip=skip, limit=limit)
     return templates
 
+#Get template attribute id
+@app.get("/attribute_templates/get/name/{name}", response_model=schemas.AttributeTemplate)
+def get_template_by_name(name: str, db: Session = Depends(get_db)):
+    db_template = crud.get_attribute_template_by_name(db, name=name)
+    if db_template is None:
+        raise HTTPException(status_code=404, detail="La plantilla de atributo no existe")
+    return db_template
+
+# # # # # # # # # 
+#  ATTRIBUTES   #
+# # # # # # # # #
+
+# Create attribute from template
+@app.post("/attributes/create", response_model=schemas.Attribute)
+def create_attribute(attribute: schemas.AttributeCreate, db: Session = Depends(get_db)):
+    return crud.create_attribute_from_template(db=db, attribute=attribute)
+
 # Get all attributes
-@app.get("/attributes/", response_model=List[schemas.Attribute])
+@app.get("/attributes/get", response_model=List[schemas.Attribute])
 def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     attributes = crud.get_attributes(db, skip=skip, limit=limit)
     return attributes
 
-# Create attribute from template
-@app.post("/attributes/create/{template_id}/{project_id}", response_model=schemas.Attribute)
-def create_attribute(template_id: int,project_id: int,attribute: schemas.AttributeCreate, db: Session = Depends(get_db)):
-    return crud.create_attribute_from_template_and_add_it_to_a_project(db=db, attribute=attribute,template_id=template_id,project_id=project_id)
-
 # # # # # # # # # 
-#  REQUIREMENTS   #
+#  REQUIREMENTS #
 # # # # # # # # #
 
 # Create requirement
