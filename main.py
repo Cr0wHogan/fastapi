@@ -116,6 +116,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
     return db_project
 
+# add attribute (requirement_text, attribute_name)
 
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
@@ -132,6 +133,8 @@ def create_template(attribute_template: schemas.AttributeTemplateCreate, db: Ses
 def read_templates(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     templates = crud.get_attribute_templates(db, skip=skip, limit=limit)
     return templates
+
+# get id
 
 #Get template attribute id
 @app.get("/attribute_templates/get/name/{name}", response_model=schemas.AttributeTemplate)
@@ -156,6 +159,8 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     attributes = crud.get_attributes(db, skip=skip, limit=limit)
     return attributes
 
+# get id
+
 # # # # # # # # # 
 #  REQUIREMENTS #
 # # # # # # # # #
@@ -164,3 +169,7 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 @app.post("/requirements/create", response_model=schemas.Requirement)
 def create_requirement(requirement: schemas.RequirementCreate, db: Session = Depends(get_db)):
     return crud.create_requirement(db=db, requirement=requirement)
+
+# get
+
+# get id
