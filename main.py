@@ -132,12 +132,15 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
     return attributes
 
 # Create attribute from template
-@app.post("/attribute/create/{template_id}/{project_id}", response_model=schemas.Attribute)
+@app.post("/attributes/create/{template_id}/{project_id}", response_model=schemas.Attribute)
 def create_attribute(template_id: int,project_id: int,attribute: schemas.AttributeCreate, db: Session = Depends(get_db)):
     return crud.create_attribute_from_template_and_add_it_to_a_project(db=db, attribute=attribute,template_id=template_id,project_id=project_id)
 
-# Create requeriment
-@app.post("/requeriment/create/{attribute_id}", response_model=schemas.RequerimentCreate)
-def create_requeriment(attribute_id:int,requeriment: schemas.RequerimentCreate, db: Session = Depends(get_db)):
-    return crud.create_requeriment(db=db, requeriment=requeriment,attribute_id=attribute_id)
+# # # # # # # # # 
+#  REQUIREMENTS   #
+# # # # # # # # #
 
+# Create requirement
+@app.post("/requirements/create", response_model=schemas.Requirement)
+def create_requirement(requirement: schemas.RequirementCreate, db: Session = Depends(get_db)):
+    return crud.create_requirement(db=db, requirement=requirement)

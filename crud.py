@@ -85,14 +85,14 @@ def create_attribute_from_template_and_add_it_to_a_project(db: Session, attribut
     db.refresh(db_attribute)
     return db_attribute
 
-def create_requeriment(db: Session, requeriment: schemas.RequerimentCreate,attribute_id:int):
-    db_requeriment = models.Requeriment(**requeriment.dict(),attribute_id=attribute_id)
+def create_requirement(db: Session, requirement: schemas.RequirementCreate):
+    db_requirement = models.Requirement(**requirement.dict())
     #attribute=db.query(models.Attribute).filter(models.Attribute.id == attribute_id).first()
-    #attribute.requeriments.append(db_requeriment)
-    db.add(db_requeriment)
+    #attribute.requirements.append(db_requirement)
+    db.add(db_requirement)
     db.commit()
-    db.refresh(db_requeriment)
-    return db_requeriment 
+    db.refresh(db_requirement)
+    return db_requirement 
 
 def get_attribute_template_by_name(db: Session, name:str):
     db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.name == name).first()
