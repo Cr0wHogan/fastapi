@@ -131,7 +131,12 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
         raise HTTPException(status_code=404, detail="El proyecto no existe")
 
     #Creo un atributo al proyecto desde su respectivo template
-    db_attribute = models.Attribute(template_id=db_template.id,project_id=project_id)
+    # TODO: Primero busco en los atributos del projecto si alguno tiene el mismo atribute template que db_template
+    
+        # si lo encuentro -> prioridad + 1
+
+    # si no lo encuentro ->
+    db_attribute = models.Attribute(template_id=db_template.id,project_id=project_id,prioridad=0)
     db.add(db_attribute)
     db.commit()
     db.refresh(db_attribute)
