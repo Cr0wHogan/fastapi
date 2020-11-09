@@ -93,3 +93,8 @@ def create_requeriment(db: Session, requeriment: schemas.RequerimentCreate,attri
     db.commit()
     db.refresh(db_requeriment)
     return db_requeriment 
+
+def get_attribute_template_by_name(db: Session, name:str):
+    db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.name == name).first()
+    return db_template
+

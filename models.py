@@ -17,7 +17,7 @@ class Requeriment(Base):
 class AttributeTemplate(Base):
     __tablename__ = "attributes_templates" 
     id = Column(Integer, primary_key=True, index=True)
-    name= Column(String) 
+    name= Column(String,unique=True,index=True)
     description= Column(String)
 
 class Attribute(Base):
@@ -42,7 +42,7 @@ class Project(Base):
     __tablename__ = "projects"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
+    title = Column(String)  #Pensamos que puede ser unique en un futuro.
     description = Column(String)
     #team = relationship("User", secondary=project_user_table)
     attributes = relationship("Attribute", backref="projects") 

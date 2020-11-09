@@ -104,6 +104,16 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 # # # # # # # # #
 
 
+#Get template attribute id
+@app.get("/attribute_templates/get/{attribute_templates_name}", response_model=schemas.AttributeTemplate)
+def get_template_by_name(attribute_templates_name: str, db: Session = Depends(get_db)):
+    db_template = crud.get_attribute_template_by_name(db, name=attribute_templates_name)
+    if db_template is None:
+        raise HTTPException(status_code=404, detail="La plantilla de atributo no existe")
+    return db_template
+
+
+
 # Create attribute template
 @app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
 def create_template(attribute_template: schemas.AttributeTemplateCreate, db: Session = Depends(get_db)):
@@ -130,3 +140,4 @@ def create_attribute(template_id: int,project_id: int,attribute: schemas.Attribu
 @app.post("/requeriment/create/{attribute_id}", response_model=schemas.RequerimentCreate)
 def create_requeriment(attribute_id:int,requeriment: schemas.RequerimentCreate, db: Session = Depends(get_db)):
     return crud.create_requeriment(db=db, requeriment=requeriment,attribute_id=attribute_id)
+
