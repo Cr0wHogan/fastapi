@@ -116,7 +116,10 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Proyecto no encontrado")
     return db_project
 
-# add attribute (requirement_text, attribute_name)
+# add attribute (requirement_text, attribute_name, project_id)
+# traer el template por attribute name # filter
+# crear atributo con project_id y template_id  # create
+# agregar requerimiento a atributo y sumar uno a prioridad # update 
 
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
