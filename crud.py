@@ -27,6 +27,33 @@ def create_user(db: Session, user: schemas.UserCreate):
 
 # Patterns
 
+def similarity(attributes1, attributes2):
+    return 1
+
+def get_patterns(db: Session, project:schemas.Project):
+    # Obtengo atributos
+    project_attributes = project.attributes
+
+    all_projects = db.query(models.Project).filter(models.Project.id != project.id).all()
+
+    # tuplas (distancia, proyecto) para cada proyecto
+    distances = [(similarity(p.attributes,project_attributes), p) for p in all_projects]
+
+    # sort by distance
+    distances = sorted(distances, key=lambda x: x[0])
+
+    closest_sim = distances[0][0]
+    # if the distances between the architecture and the next is lower to this then they are close enough
+    treshold = 1
+
+    # Load all who are closer between than treshold
+    closest = []
+    for distance, project_to_compare in distances:
+        if abs(distance-closest_sim) < treshold:
+            closest.append(project_to_compare)
+
+    return closest
+
 
 # Un usuario crea un proyecto
 def create_pattern(db: Session, pattern: schemas.ArchitecturePatternCreate):

@@ -147,6 +147,7 @@ def add_attribute_to_project(pattern_id:int,project_id:int,db: Session = Depends
     
     return db_project
 
+
 # # # # # # # # # # # # # #
 #  ARCHITECTURE PATTERNS  #
 # # # # # # # # # # # # # # 
@@ -163,6 +164,21 @@ def create_pattern(
 def read_patterns(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     patterns = crud.get_patterns(db, skip=skip, limit=limit)
     return patterns
+
+
+# Get all patterns
+@app.get("/pattern/suggestion", response_model=List[schemas.ArchitecturePattern])
+def read_patterns(project_id: int, db: Session = Depends(get_db)):
+
+    # Traigo proyecto
+    db_project= crud.get_project(db, project_id=project_id)
+    #Chequeo que exista el proyecto
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="El proyecto no existe")
+
+    patterns = crud.get_pattern_suggestion(db, project=db_project)
+    return patterns
+
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
 # # # # # # # # # # # # # # 
