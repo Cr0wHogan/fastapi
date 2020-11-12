@@ -25,7 +25,22 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.refresh(db_user)
     return db_user
 
+# Patterns
 
+
+# Un usuario crea un proyecto
+def create_pattern(db: Session, pattern: schemas.ArchitecturePatternCreate):
+    # Creo el proyecto
+    db_pattern = models.ArchitecturePattern(**pattern.dict())
+    # Lo agrego a la base
+    db.add(db_pattern)
+    # Commit y refresh
+    db.commit()
+    db.refresh(db_pattern)
+    return db_pattern
+
+def get_pattern(db: Session, pattern_id: int):
+    return db.query(models.ArchitecturePattern).filter(models.ArchitecturePattern.id == pattern_id).first()
 
 
 # Projects

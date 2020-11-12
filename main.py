@@ -23,7 +23,7 @@ def get_db():
         db.close()
 
 
-        
+
 
 # # # # # # # # # #
 #      USERS      #
@@ -126,7 +126,37 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     
     return db_project
 
+# Link to pattern
+@app.get("/projects/add_pattern", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
+def add_attribute_to_project(pattern_id:int,project_id:int,db: Session = Depends(get_db)):
+    # traer el template por attribute name #filter
+    db_pattern = crud.get_pattern(db, pattern_id=pattern_id)
+    #Chequeo que exista el template especificado
+    if db_pattern is None:
+        raise HTTPException(status_code=404, detail="El patrón especificado no existe.")
+    
+    # Traigo proyecto
+    db_project= crud.get_project(db, project_id=project_id)
+    #Chequeo que exista el proyecto
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="El proyecto no existe")
+ 
+    db_project.add(db_pattern)
+    db.commit()
+    db.refresh(db_project)
+    
+    return db_project
 
+# # # # # # # # # # # # # #
+#  ARCHITECTURE PATTERNS  #
+# # # # # # # # # # # # # # 
+
+# Create pattern
+@app.post("/patterns/create", response_model=schemas.ArchitecturePattern)
+def create_pattern(
+    pattern: schemas.ArchitecturePatternCreate, db: Session = Depends(get_db)
+):
+    return crud.create_pattern(db=db, pattern=pattern)
 
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
