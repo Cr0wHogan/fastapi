@@ -107,7 +107,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
 @app.get("/projects/add_attribute", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
 def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:str,db: Session = Depends(get_db)):
     # traer el template por attribute name #filter
-    db_template = crud.get_attribute_template_by_name(db, name=attribute_name)
+    db_template = crud.get_attribute_template_by_slug(db, slug=attribute_name)
     #Chequeo que exista el template especificado
     if db_template is None:
         raise HTTPException(status_code=404, detail="El template del atributo no existe")
@@ -129,22 +129,7 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
 # Link to pattern
 @app.get("/projects/add_pattern", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
 def add_attribute_to_project(pattern_id:int,project_id:int,db: Session = Depends(get_db)):
-    # traer el template por attribute name #filter
-    db_pattern = crud.get_pattern(db, pattern_id=pattern_id)
-    #Chequeo que exista el template especificado
-    if db_pattern is None:
-        raise HTTPException(status_code=404, detail="El patrón especificado no existe.")
-    
-    # Traigo proyecto
-    db_project= crud.get_project(db, project_id=project_id)
-    #Chequeo que exista el proyecto
-    if db_project is None:
-        raise HTTPException(status_code=404, detail="El proyecto no existe")
- 
-    db_project.architecture_pattern_id = db_pattern.id
-    db.commit()
-    db.refresh(db_project)
-    
+    db_project = crud.add_pattern_to_project(db,project_id,pattern_id)
     return db_project
 
 

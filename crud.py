@@ -1,6 +1,6 @@
 import models, schemas
 from sqlalchemy.orm import Session
-
+from utils import classifier
 
 
 # Users
@@ -26,22 +26,49 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 # Patterns
+# traer el template por attribute name #filter
+def add_pattern_to_project(db,project_id, pattern_id):
+    db_pattern = get_pattern(db, pattern_id=pattern_id)
+    #Chequeo que exista el template especificado
+    if db_pattern is None:
+        raise HTTPException(status_code=404, detail="El patrón especificado no existe.")
+    
+    # Traigo proyecto
+    db_project= get_project(db, project_id=project_id)
+    #Chequeo que exista el proyecto
+    if db_project is None:
+        raise HTTPException(status_code=404, detail="El proyecto no existe")
+ 
+    db_project.architecture_pattern_id = db_pattern.id
+    db.commit()
+    db.refresh(db_project)
+
+    train_model(db)
+    return db_project
+
+def train_model(db):
+    projects_with_patterns = db.query(models.Project).filter(models.Project.architecture_pattern != None).all()
+    classifier.train(projects_with_patterns)
 
 def similarity(attributes1, attributes2):
-    # TODO
     return 1
 
 def get_pattern_suggestion(db: Session, project:schemas.Project):
+    """
     # Obtengo atributos
     project_attributes = project.attributes
 
-    all_projects = db.query(models.Project).filter(models.Project.id != project.id).all()
+    all_projects = db.query(models.Project).filter(models.Project.id != project.id).filter(models.Project.architecture_pattern != None).all()
+
+    if not any(all_projects):
+        return []
 
     # tuplas (distancia, proyecto) para cada proyecto
     distances = [(similarity(p.attributes,project_attributes), p) for p in all_projects]
-
     # sort by distance
     distances = sorted(distances, key=lambda x: x[0])
+
+
 
     closest_sim = distances[0][0]
     # if the distances between the architecture and the next is lower to this then they are close enough
@@ -51,9 +78,15 @@ def get_pattern_suggestion(db: Session, project:schemas.Project):
     closest = []
     for distance, project_to_compare in distances:
         if abs(distance-closest_sim) < treshold:
-            closest.append(project_to_compare)
+            closest.append(project_to_compare.architecture_pattern)
+    """
+    classification = classifier.classify(project)
+    if not classification:
+        train_model(db)
+    classification = classifier.classify(project)
+    # TODO: limpiar repetidos
 
-    return closest
+    return [get_pattern_by_title(db,classification)]
 
 
 # Un usuario crea un proyecto
@@ -69,6 +102,9 @@ def create_pattern(db: Session, pattern: schemas.ArchitecturePatternCreate):
 
 def get_pattern(db: Session, pattern_id: int):
     return db.query(models.ArchitecturePattern).filter(models.ArchitecturePattern.id == pattern_id).first()
+
+def get_pattern_by_title(db: Session, title:str):
+    return db.query(models.ArchitecturePattern).filter(models.ArchitecturePattern.title == title).first()
 
 def get_patterns(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.ArchitecturePattern).offset(skip).limit(limit).all()
