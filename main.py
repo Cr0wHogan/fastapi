@@ -22,17 +22,12 @@ def get_db():
     finally:
         db.close()
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#   USERS   
-#
-#      /users/create                    POST
-#      /users/get/                      GET
-#      /users/get/id/{user_id}          GET
-#      /users/get/email/{user_id}       GET
-#      TODO: /users/delete                    GET
-#      TODO: /users/update                    POST
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+        
+
+# # # # # # # # # #
+#      USERS      #
+# # # # # # # # # #
 
 # Create users
 @app.post("/users/create", response_model=schemas.User)
@@ -65,17 +60,11 @@ def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
     return db_user
 
 
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
-#   PROJECTS   
-#
-#      /projects/create                     POST
-#      /projects/join                       PUT (user_id, project_id)
-#      /proects/get                         GET
-#      /projects/get/{project_id}           GET
-#      TODO: /projects/delete               GET
-#      TODO: /projects/update               POST
-#
-# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # 
+
+
+# # # # # # # # # #
+#    PROJECTS     #
+# # # # # # # # # #
 
 # Create project
 @app.post("/projects/create", response_model=schemas.Project)
@@ -137,10 +126,11 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     
     return db_project
 
+
+
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
 # # # # # # # # # # # # # # 
-
 
 # Create attribute template
 @app.post("/attribute_templates/create", response_model=schemas.AttributeTemplate)
@@ -160,12 +150,14 @@ def read_attribute_template_by_id(attribute_template_id:str, db: Session = Depen
     return template
 
 #Get template attribute by name
-@app.get("/attribute_templates/get/name/{name}", response_model=schemas.AttributeTemplate)
-def get_template_by_name(name: str, db: Session = Depends(get_db)):
-    db_template = crud.get_attribute_template_by_name(db, name=name)
+@app.get("/attribute_templates/get/name/{slug}", response_model=schemas.AttributeTemplate)
+def get_template_by_name(slug: str, db: Session = Depends(get_db)):
+    db_template = crud.get_attribute_template_by_slug(db, slug=slug)
     if db_template is None:
         raise HTTPException(status_code=404, detail="La plantilla de atributo no existe")
     return db_template
+
+
 
 # # # # # # # # # 
 #  ATTRIBUTES   #
@@ -187,6 +179,8 @@ def read_attributes(skip: int = 0, limit: int = 100, db: Session = Depends(get_d
 def read_attribute_by_id(attribute_id:str, db: Session = Depends(get_db)):
     attribute = crud.get_attribute_by_id(db,attribute_id=attribute_id)
     return attribute
+
+
 
 # # # # # # # # # 
 #  REQUIREMENTS #

@@ -16,6 +16,7 @@ class Requirement(RequirementBase):
 
 class AttributeTemplateBase(BaseModel):
     name: str
+    slug: str
     description: str
 
 class AttributeTemplateCreate(AttributeTemplateBase):
@@ -42,13 +43,27 @@ class Attribute(AttributeBase):
     class Config:
         orm_mode = True
 
+# ARCHITECTURAL PATTERN
+class ArchitecturePatternBase(BaseModel):
+    title: str
+    description: Optional[str] = None
+    
+
+class ArchitecturePatterCreate(ArchitecturePatternBase):
+    pass
+
+class ArchitecturePatter(ArchitecturePatternBase):
+    id: int
+    #team: List[User] = []
+    attributes: List[Attribute] = [] 
+    class Config:
+        orm_mode = True
+
 # PROJECT TABLE
 class ProjectBase(BaseModel):
     title: str
     description: Optional[str] = None
     
-    class Config:
-        orm_mode = True
 
 class ProjectCreate(ProjectBase):
     pass
@@ -56,6 +71,8 @@ class ProjectCreate(ProjectBase):
 class Project(ProjectBase):
     id: int
     #team: List[User] = []
+    architecture_pattern: Optional[ArchitecturePattern] 
+    architecture_pattern_id: Optional[int]
     attributes: List[Attribute] = [] 
     class Config:
         orm_mode = True

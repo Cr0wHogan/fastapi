@@ -12,5 +12,4 @@ engine_string = "postgres://nzzkycbeudadzf:1a4c6464992f23a5165e4a6bc77668a7b0254
 
 engine = create_engine(engine_string)  
 
-
 Base = declarative_base()

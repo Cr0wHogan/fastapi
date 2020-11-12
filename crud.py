@@ -1,6 +1,10 @@
 import models, schemas
 from sqlalchemy.orm import Session
 
+
+
+# Users
+
 def get_user(db: Session, user_id: int):
     return db.query(models.User).filter(models.User.id == user_id).first()
 
@@ -20,6 +24,11 @@ def create_user(db: Session, user: schemas.UserCreate):
     db.commit()
     db.refresh(db_user)
     return db_user
+
+
+
+
+# Projects
 
 def get_project(db: Session, project_id: int):
     return db.query(models.Project).filter(models.Project.id == project_id).first()
@@ -72,8 +81,8 @@ def create_attribute_template(db: Session, attribute_template: schemas.Attribute
 def get_attribute_template_by_id(db: Session, attribute_template_id:int):
     return db.query(models.AttributeTemplate).filter(models.AttributeTemplate.id == attribute_template_id).first()
 
-def get_attribute_template_by_name(db: Session, name:str):
-    db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.name == name).first()
+def get_attribute_template_by_slug(db: Session, slug:str):
+    db_template = db.query(models.AttributeTemplate).filter(models.AttributeTemplate.slug == slug).first()
     return db_template
 
 def get_attribute_templates(db: Session, skip: int = 0, limit: int = 100):
@@ -122,6 +131,10 @@ def create_attribute_from_template(db: Session, attribute: schemas.AttributeCrea
     db.commit()
     db.refresh(db_attribute)
     return db_attribute
+
+
+
+# Requirements
 
 def create_requirement(db: Session, requirement: schemas.RequirementCreate):
     db_requirement = models.Requirement(**requirement.dict())
