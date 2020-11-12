@@ -55,7 +55,6 @@ class ArchitecturePatternCreate(ArchitecturePatternBase):
 class ArchitecturePattern(ArchitecturePatternBase):
     id: int
     #team: List[User] = []
-    attributes: List[Attribute] = [] 
     class Config:
         orm_mode = True
 

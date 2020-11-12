@@ -17,8 +17,8 @@ class Requirement(Base):
 class AttributeTemplate(Base):
     __tablename__ = "attribute_templates" 
     id = Column(Integer, primary_key=True, index=True)
-    name= Column(String)
-    slug = Column(String,unique=True,index=True)
+    name= Column(String) # Operabilidad
+    slug = Column(String,unique=True,index=True) # operability
     description= Column(String)
 
 class Attribute(Base):
@@ -60,5 +60,5 @@ class ArchitecturePattern(Base):
     __tablename__ = "architecture_patterns"
 
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)  #Pensamos que puede ser unique en un futuro.
-    description = Column(String)
+    title = Column(String)  # pipes and filters
+    description = Column(String) # descripcion
