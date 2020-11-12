@@ -62,5 +62,3 @@ class ArchitecturePattern(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String)  #Pensamos que puede ser unique en un futuro.
     description = Column(String)
-    #team = relationship("User", secondary=project_user_table)
-    attributes = relationship("Attribute", backref="architecture_patterns") 
