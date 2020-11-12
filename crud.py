@@ -42,6 +42,9 @@ def create_pattern(db: Session, pattern: schemas.ArchitecturePatternCreate):
 def get_pattern(db: Session, pattern_id: int):
     return db.query(models.ArchitecturePattern).filter(models.ArchitecturePattern.id == pattern_id).first()
 
+def get_patterns(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.ArchitecturePattern).offset(skip).limit(limit).all()
+
 
 # Projects
 

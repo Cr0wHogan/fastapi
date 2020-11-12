@@ -158,6 +158,11 @@ def create_pattern(
 ):
     return crud.create_pattern(db=db, pattern=pattern)
 
+# Get all patterns
+@app.get("/pattern/get", response_model=List[schemas.ArchitecturePattern])
+def read_patterns(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    patterns = crud.get_patterns(db, skip=skip, limit=limit)
+    return patterns
 # # # # # # # # # # # # # #
 #  ATTRIBUTES TEMPLATES   #
 # # # # # # # # # # # # # # 
