@@ -153,7 +153,7 @@ def read_patterns(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 
 # Get all patterns
 @app.get("/pattern/suggestion", response_model=List[schemas.ArchitecturePattern])
-def read_patterns(project_id: int, db: Session = Depends(get_db)):
+def suggest_patterns(project_id: int, db: Session = Depends(get_db)):
 
     # Traigo proyecto
     db_project= crud.get_project(db, project_id=project_id)

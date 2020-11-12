@@ -22,22 +22,32 @@ def add_architecture_pattern(name,description):
     data = '{"title":"'+name+'","description":"'+description+'"}'
     response = requests.post('http://fastapi-training1.herokuapp.com/patterns/create', headers=headers, data=data)
 
+def add_attribute(attribute,project_id,text):
+    params = (
+        ('attribute_name', attribute),
+        ('project_id',project_id),
+        ('requirement_text', text),
+    )
+    response = requests.get('http://fastapi-training1.herokuapp.com/projects/add_attribute', headers=headers, params=params)
+
+def add_pattern(pattern_id, project_id):
+
+    params = (
+        ('pattern_id', pattern_id),
+        ('project_id', project_id),
+    )
+
+    response = requests.get('http://fastapi-training1.herokuapp.com/projects/add_pattern', headers=headers, params=params)
+
 def seed():
-    # Data
+    # Users
     users_email = ["joacosaralegui@gmail.com","galopiancola@gmail.com","nicoerrea@gmail.com","palmibenavente@hotmail.com","mandres10@yahoo.com.ar"]
 
+    print("Agregando usuarios...")
     for email in users_email:
         add_user(email)
     
-    projects_data = [
-        ("Proyecto 1","Proyecto de prueba numero 1"),
-        ("Proyecto 2","Proyecto de prueba numero 2"),
-        ("Proyecto 3","Proyecto de prueba numero 3")
-    ]
-
-    for name,description in projects_data:
-        add_project(name,description)
-
+    # Attributes templates
     attributes_templates_data = [
         ("Disponibilidad","availability","Hace referencia a la probabilidad de que un artículo funcione satisfactoriamente en un momento dado cuando se utilice en condiciones indicadas en un entorno de soporte ideal."),
         ("Tolerancia a fallos","fault_tolerance","La tolerancia a fallos es la propiedad que le permite a un sistema seguir funcionando correctamente en caso de fallo de uno o varios de sus componentes. Si disminuye su calidad de funcionamiento, la disminución es proporcional a la gravedad de la avería, en comparación con un sistema diseñado ingenuamente de forma que hasta un pequeño fallo puede causar el colapso total del sistema. Tolerancia a fallos es particularmente buscado en sistemas de alta disponibilidad."),
@@ -50,6 +60,21 @@ def seed():
         ("Interoperabilidad","interoperability","La interoperabilidad es una característica de un producto o sistema, cuyas interfaces se entienden completamente, para trabajar con otros productos o sistemas, en el presente o en el futuro, ya sea en la implementación o el acceso, sin ninguna restricción.")
     ]
     
+    # Attributes
+    attributes_data = [
+        ("availability","Que este siempre disponible"),
+        ("fault_tolerance","Que sea tolerante a fallos"),
+        ("maintainability","Que sea facil de mantener"),
+        ("performance","Que funcione rápido"),
+        ("scalability","Que sea escalable"),
+        ("security","Que sea seguro"),
+        ("usability","Que sea facil de usar"),
+        ("portability","Que funcione bien en muchas plataformas"),
+        ("interoperability","Que sea facil de conectar con otros componentes")
+    ]
+
+    print("Agregando templates de atributos....")
+    # Projects
     for name, slug, description in attributes_templates_data:
         add_attribute_template(name,slug,description)
 
@@ -62,9 +87,31 @@ def seed():
         ("Pipes and filters","")
     ]
 
+    print("Agregando patrones de arquitectura...")    
     for name, description in patterns_data:
         add_architecture_pattern(name,description)
 
+    projects_data = [
+        # Nombre    Descripcion                       # atributos   #pattern
+        ("Proyecto 1","Proyecto de prueba numero 1",    [0,1,2,4,1]     ,1),
+        ("Proyecto 2.1","Proyecto de prueba numero 2",  [0,1,2,7,1]     ,2),
+        ("Proyecto 2.2","Proyecto de prueba numero 2",  [0,1,1,3,7,1]   ,2),
+        ("Proyecto 3","Proyecto de prueba numero 3",    [1,3,4,5,6]     ,3),
+        ("Proyecto 4","Proyecto de prueba numero 3",    [3,4,7,8,8]     ,4),
+        ("Proyecto 5","Proyecto de prueba numero 3",    [1,3,4,4,6]     ,5),
+        ("Proyecto 6","Proyecto de prueba numero 3",    [1,3,5,5,5]     ,6)
+    ]
+
+    print("Agregando proyectos con patrones y atributos...")
+    for idx, p in enumerate(projects_data):
+        name, description, attributes_id, pattern_id = p
+        add_project(name,description)
+        for attribute_id in attributes_id:
+            attr_name, text = attributes_data[attribute_id]
+            add_attribute(attr_name,idx+1,text)   
+        add_pattern(pattern_id, idx+1)
+
     
 if __name__=="__main__":
+    # Correr con la base vacia!!!
     seed()
