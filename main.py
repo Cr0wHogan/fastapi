@@ -141,7 +141,7 @@ def add_attribute_to_project(pattern_id:int,project_id:int,db: Session = Depends
     if db_project is None:
         raise HTTPException(status_code=404, detail="El proyecto no existe")
  
-    db_project.pattern_id = db_pattern.id
+    db_project.architecture_pattern_id = db_pattern.id
     db.commit()
     db.refresh(db_project)
     
