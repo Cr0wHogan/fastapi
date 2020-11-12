@@ -49,10 +49,10 @@ class ArchitecturePatternBase(BaseModel):
     description: Optional[str] = None
     
 
-class ArchitecturePatterCreate(ArchitecturePatternBase):
+class ArchitecturePatternCreate(ArchitecturePatternBase):
     pass
 
-class ArchitecturePatter(ArchitecturePatternBase):
+class ArchitecturePattern(ArchitecturePatternBase):
     id: int
     #team: List[User] = []
     attributes: List[Attribute] = [] 
