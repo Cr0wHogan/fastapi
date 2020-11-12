@@ -28,9 +28,10 @@ def create_user(db: Session, user: schemas.UserCreate):
 # Patterns
 
 def similarity(attributes1, attributes2):
+    # TODO
     return 1
 
-def get_patterns(db: Session, project:schemas.Project):
+def get_pattern_suggestion(db: Session, project:schemas.Project):
     # Obtengo atributos
     project_attributes = project.attributes
 
