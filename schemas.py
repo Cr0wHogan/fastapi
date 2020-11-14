@@ -37,7 +37,7 @@ class AttributeCreate(AttributeBase):
 
 class Attribute(AttributeBase):
     id: int
-    prioridad: int = 0
+    prioridad: Optional[int] = 0
     requirements:List[Requirement]=[]
     template: AttributeTemplate
     class Config:
