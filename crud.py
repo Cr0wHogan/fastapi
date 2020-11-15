@@ -1,6 +1,6 @@
 import models, schemas
 from sqlalchemy.orm import Session
-from utils import classifier
+from utils import classifier_manual as classifier
 
 
 # Users
@@ -43,47 +43,14 @@ def add_pattern_to_project(db,project_id, pattern_id):
     db.commit()
     db.refresh(db_project)
 
-    train_model(db)
     return db_project
 
-def train_model(db):
-    projects_with_patterns = db.query(models.Project).filter(models.Project.architecture_pattern != None).all()
-    classifier.train(projects_with_patterns)
-
-def similarity(attributes1, attributes2):
-    return 1
 
 def get_pattern_suggestion(db: Session, project:schemas.Project):
-    """
-    # Obtengo atributos
-    project_attributes = project.attributes
-
-    all_projects = db.query(models.Project).filter(models.Project.id != project.id).filter(models.Project.architecture_pattern != None).all()
-
-    if not any(all_projects):
-        return []
-
-    # tuplas (distancia, proyecto) para cada proyecto
-    distances = [(similarity(p.attributes,project_attributes), p) for p in all_projects]
-    # sort by distance
-    distances = sorted(distances, key=lambda x: x[0])
-
-
-
-    closest_sim = distances[0][0]
-    # if the distances between the architecture and the next is lower to this then they are close enough
-    treshold = 1
-
-    # Load all who are closer between than treshold
-    closest = []
-    for distance, project_to_compare in distances:
-        if abs(distance-closest_sim) < treshold:
-            closest.append(project_to_compare.architecture_pattern)
-    """
-    classification = classifier.classify(project)
-    if not classification:
-        train_model(db)
-    classification = classifier.classify(project)
+    classification = classifier.classify(db,project)[0]
+    #if not classification:
+    #    train_model(db)
+    #classification = classifier.classify(db,project)
     # TODO: limpiar repetidos
 
     return [get_pattern_by_title(db,classification)]
