@@ -52,6 +52,7 @@ def train(projects):
     # Entrenar clasificador
     pattern_classifier = nltk.NaiveBayesClassifier.train(training_set)
     accuracy = nltk.classify.accuracy(pattern_classifier, testing_set)*100
+    pattern_classifier.show_most_informative_features()
     print("Precisión del clasificador estimada:"+str(accuracy))
 
 def classify(project):
