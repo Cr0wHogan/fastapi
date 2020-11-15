@@ -95,7 +95,7 @@ def seed():
         # Nombre             Descripcion                            # atributos                               #pattern
         ("Capas 1","Proyecto de prueba numero 1",                  [1,1,4,4,6,6,7,7]                             ,1),
         ("Capas 2","Proyecto de prueba numero 2",                  [1,1,1,1,4,4,4,4,6,6,6,6,7,7,7,7]             ,1),
-        ("Capas 3","Proyecto de prueba numero 3",                  [1,1,1,1,1,1,1,4,4,6,6,6,,7,7]                ,1),
+        ("Capas 3","Proyecto de prueba numero 3",                  [1,1,1,1,1,1,1,4,4,6,6,6,7,7]                ,1),
         ("Broker 1","Proyecto de prueba numero 4",                 [4,4,6,6,7,7,8,8]                             ,2),
         ("Broker 2","Proyecto de prueba numero 5",                 [4,4,4,4,6,6,6,6,7,7,7,7,8,8,8,8]             ,2),
         ("Broker 3","Proyecto de prueba numero 6",                 [4,4,4,4,4,4,6,6,6,6,6,6,6,7,7,8,8,8,8]       ,2),
