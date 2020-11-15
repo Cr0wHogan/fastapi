@@ -92,14 +92,25 @@ def seed():
         add_architecture_pattern(name,description)
 
     projects_data = [
-        # Nombre    Descripcion                       # atributos   #pattern
-        ("Proyecto 1","Proyecto de prueba numero 1",    [0,1,2,4,1]     ,1),
-        ("Proyecto 2.1","Proyecto de prueba numero 2",  [0,1,2,7,1]     ,2),
-        ("Proyecto 2.2","Proyecto de prueba numero 2",  [0,1,1,3,7,1]   ,2),
-        ("Proyecto 3","Proyecto de prueba numero 3",    [1,3,4,5,6]     ,3),
-        ("Proyecto 4","Proyecto de prueba numero 3",    [3,4,7,8,8]     ,4),
-        ("Proyecto 5","Proyecto de prueba numero 3",    [1,3,4,4,6]     ,5),
-        ("Proyecto 6","Proyecto de prueba numero 3",    [1,3,5,5,5]     ,6)
+        # Nombre             Descripcion                            # atributos                               #pattern
+        ("Capas 1","Proyecto de prueba numero 1",                  [1,1,4,4,6,6,7,7]                             ,1),
+        ("Capas 2","Proyecto de prueba numero 2",                  [1,1,1,1,4,4,4,4,6,6,6,6,7,7,7,7]             ,1),
+        ("Capas 3","Proyecto de prueba numero 3",                  [1,1,1,1,1,1,1,4,4,6,6,6,,7,7]                ,1),
+        ("Broker 1","Proyecto de prueba numero 4",                 [4,4,6,6,7,7,8,8]                             ,2),
+        ("Broker 2","Proyecto de prueba numero 5",                 [4,4,4,4,6,6,6,6,7,7,7,7,8,8,8,8]             ,2),
+        ("Broker 3","Proyecto de prueba numero 6",                 [4,4,4,4,4,4,6,6,6,6,6,6,6,7,7,8,8,8,8]       ,2),
+        ("Model-View-Controller","Proyecto de prueba numero 7",    [2,2,6,6]                                     ,3),
+        ("Model-View-Controller","Proyecto de prueba numero 8",    [2,2,2,2,6,6,6,6]                             ,3),
+        ("Model-View-Controller","Proyecto de prueba numero 9",    [2,2,2,2,2,2,2,2,6,6,6]                       ,3),
+        ("Cliente Servidor 4","Proyecto de prueba numero 4",       [2,2,2,7]                                     ,4),
+        ("Cliente Servidor 4.1","Proyecto de prueba numero 4.1",   [2,2,7,7]                                     ,4),
+        ("Cliente Servidor 4.2","Proyecto de prueba numero 4.2",   [2,2,7,7,7]                                   ,4),
+        ("Pipes and filters 5","Proyecto de prueba numero 5",      [2,2,2]                                       ,5),
+        ("Pipes and filters 5.1","Proyecto de prueba numero 5.1",  [2]                                           ,5),
+        ("Pipes and filters 5.2","Proyecto de prueba numero 5.2",  [2,2,2,2,2,2,2]                               ,5),
+        ("Peer to Peer 6","Proyecto de prueba numero 6",           [0,0,0,7,8]                                   ,6),
+        ("Peer to Peer 6.1","Proyecto de prueba numero 6.1",       [0,0,7,7,8,8]                                 ,6),
+        ("Peer to Peer 6.2","Proyecto de prueba numero 6.2",       [0,7,7,7,8,8,8]                               ,6)
     ]
 
     print("Agregando proyectos con patrones y atributos...")
