@@ -6,21 +6,21 @@ headers = {
     'Content-Type': 'application/json',
 }
 
-def add_user(email):
-    data = '{"email":"'+email+'"}'
-    response = requests.post('http://fastapi-training1.herokuapp.com/users/create', headers=headers, data=data)
+def add_user(id_virtual_world,nombre):
+    data = {"id_virtual_world":id_virtual_world,"nombre":nombre}
+    response = requests.post('http://fastapi-testing1.herokuapp.com/users/create', headers=headers, data=data)
 
 def add_project(name,description):
     data = {"title":name,"description":description}
-    response = requests.post('http://fastapi-training1.herokuapp.com/projects/create', headers=headers, data=json.dumps(data))
+    response = requests.post('http://fastapi-testing1.herokuapp.com/projects/create', headers=headers, data=json.dumps(data))
 
 def add_attribute_template(name, slug, description):
     data = {"name":name,"slug":slug,"description":description}
-    response = requests.post('http://fastapi-training1.herokuapp.com/attribute_templates/create', headers=headers,  data=json.dumps(data))
+    response = requests.post('http://fastapi-testing1.herokuapp.com/attribute_templates/create', headers=headers,  data=json.dumps(data))
 
 def add_architecture_pattern(name,description):
     data = '{"title":"'+name+'","description":"'+description+'"}'
-    response = requests.post('http://fastapi-training1.herokuapp.com/patterns/create', headers=headers, data=data)
+    response = requests.post('http://fastapi-testing1.herokuapp.com/patterns/create', headers=headers, data=data)
 
 def add_attribute(attribute,project_id,text):
     params = (
@@ -28,7 +28,7 @@ def add_attribute(attribute,project_id,text):
         ('project_id',project_id),
         ('requirement_text', text),
     )
-    response = requests.get('http://fastapi-training1.herokuapp.com/projects/add_attribute', headers=headers, params=params)
+    response = requests.get('http://fastapi-testing1.herokuapp.com/projects/add_attribute', headers=headers, params=params)
 
 def add_pattern(pattern_id, project_id):
 
@@ -37,15 +37,17 @@ def add_pattern(pattern_id, project_id):
         ('project_id', project_id),
     )
 
-    response = requests.get('http://fastapi-training1.herokuapp.com/projects/add_pattern', headers=headers, params=params)
+    response = requests.get('http://fastapi-testing1.herokuapp.com/projects/add_pattern', headers=headers, params=params)
 
 def seed():
     # Users
-    users_email = ["joacosaralegui@gmail.com","galopiancola@gmail.com","nicoerrea@gmail.com","palmibenavente@hotmail.com","mandres10@yahoo.com.ar"]
+    users = ["joaco","galo","nico","palmi","mau"]
 
     print("Agregando usuarios...")
-    for email in users_email:
-        add_user(email)
+    count = 1
+    for user in users_email:
+        add_user(count,user)
+        count=count+1
     
     # Attributes templates
     attributes_templates_data = [
