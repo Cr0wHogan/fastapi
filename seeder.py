@@ -84,7 +84,7 @@ def seed():
         ("Model-View-Controller","La arquitectura model view controleer permite la separacion de datos, de su  representacion virtual, facilita el manejo de errores y aumenta la escabilidad. "),
         ("Cliente-Servidor","La arquitectura cliente-servidor permite gran escabilidad ya que cualquier elemento puede ser aumentado en cualquier momento, y ademas los cambios en los servidores no afectan a  los clientes. "),
         ("Peer to peer","La arquitectura peer to peer, permite la descentralizacion del sistema, es altamente seguro  ante la falla de cualquier nodo y altamente escalable en terminos de recursos. "),
-        ("Pipes and filters","La arquitectura Pipes and filters permite eficiencia en el desarrollo de soluciones para aplicaciones que requieran trabajos de multitarea")
+        ("Pipes and filters","La arquitectura pipe and filter permite el procesamiento concurrente, el agreado de filtros al sistema se realiza facilmente y ademas son reutilizables para diferentes funciones, además se caracteriza por la eficiencia en el desarrollo de soluciones para aplicaciones que requieran trabajos de multitarea")
     ]
 
     print("Agregando patrones de arquitectura...")    
