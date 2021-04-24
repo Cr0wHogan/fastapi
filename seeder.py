@@ -79,12 +79,12 @@ def seed():
         add_attribute_template(name,slug,description)
 
     patterns_data = [
-        ("Capas",""),
-        ("Broker",""),
-        ("Model-View-Controller",""),
-        ("Cliente-Servidor",""),
-        ("Peer to peer",""),
-        ("Pipes and filters","")
+        ("Capas","La arquitectura de capas, permite la independizacion de cambios, el cambio de una capa no afecta a las demas, refleja claramente la estructura y niveles de cada componente y da la funcionalidad de poner usar en una capa lo que otra brinda."),
+        ("Broker","La arquitectura broker permite cambios dinámicos, agregar, eliminar y reubicar los componentes, y hace que la distribución sea transparente para el desarrollador."),
+        ("Model-View-Controller","La arquitectura model view controleer permite la separacion de datos, de su  representacion virtual, facilita el manejo de errores y aumenta la escabilidad. "),
+        ("Cliente-Servidor","La arquitectura cliente-servidor permite gran escabilidad ya que cualquier elemento puede ser aumentado en cualquier momento, y ademas los cambios en los servidores no afectan a  los clientes. "),
+        ("Peer to peer","La arquitectura peer to peer, permite la descentralizacion del sistema, es altamente seguro  ante la falla de cualquier nodo y altamente escalable en terminos de recursos. "),
+        ("Pipes and filters","La arquitectura Pipes and filters permite eficiencia en el desarrollo de soluciones para aplicaciones que requieran trabajos de multitarea")
     ]
 
     print("Agregando patrones de arquitectura...")    

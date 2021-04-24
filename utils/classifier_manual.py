@@ -55,4 +55,16 @@ def classify(db, project):
         if abs(distance-closest_sim) < treshold:
             closest.append(project_to_compare.architecture_pattern.title)
     
+    patterns_data = [      #NUEVO (AGREGAR RESPUESTAS PREDEFINIDAS DE SUGERENCIA)
+        ("Capas",""),
+        ("Broker",""),
+        ("Model-View-Controller",""),
+        ("Cliente-Servidor",""),
+        ("Peer to peer",""),
+        ("Pipes and filters","")
+    ]
+    for pattern in patterns_data:
+        if pattern[0] == closest:
+            print(pattern[1])
+
     return closest

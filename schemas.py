@@ -78,7 +78,8 @@ class Project(ProjectBase):
 
 # USER TABLE
 class UserBase(BaseModel):
-    email: str
+    id_virtual_world: str
+    nombre: str
 
 class UserCreate(UserBase):
     #password: str

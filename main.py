@@ -32,9 +32,9 @@ def get_db():
 # Create users
 @app.post("/users/create", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user.email)
+    db_user = crud.get_user_by_id_world(db, id_virtual_world=id_virtual_world)
     if db_user:
-        raise HTTPException(status_code=400, detail="Email ya está registrado")
+        raise HTTPException(status_code=400, detail="id virtual world ya está en uso")
     return crud.create_user(db=db, user=user)
 
 # Get all users
@@ -49,15 +49,15 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return db_user
+    return db_user #NUEVO (creo que ya no sirve)
 
-# Get user by email
-@app.get("/users/get/email/{user_email}", response_model=schemas.User)
-def get_users_by_email(user_email: str, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_email(db, email=user_email)
+# Get user by id_virtual
+@app.get("/users/get/id_virtual/{user_id_virtual_world}", response_model=schemas.User)
+def get_users_by_id_virtual_world(user_id_virtual_world: str, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_id_virtual_world(db, id_virtual_world=user_id_virtual_world)
     if db_user is None:
         raise HTTPException(status_code=404, detail="Usuario no encontrado")
-    return db_user
+    return db_user   #NUEVO (probar si anda db_user.nombre)
 
 
 
@@ -124,7 +124,7 @@ def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:
     # Agrego el requerimiento al atributo
     db_requirement = crud.add_requirement_to_attribute(db,db_attribute,requirement_text)
     
-    return db_project
+    return db_attribute  #NUEVO
 
 # Link to pattern
 @app.get("/projects/add_pattern", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
