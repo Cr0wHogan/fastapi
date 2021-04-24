@@ -32,7 +32,7 @@ def get_db():
 # Create users
 @app.post("/users/create", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_id_virtual_world(db, user.id_virtual_world)
+    db_user = crud.get_user_by_id_virtual_world(user_id_virtual_world=user.id_virtual_world,db=db)
     if db_user:
         raise HTTPException(status_code=400, detail="id virtual world ya está en uso")
     return crud.create_user(db=db, user=user)
