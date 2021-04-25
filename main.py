@@ -104,7 +104,7 @@ def get_project(project_id: int, db: Session = Depends(get_db)):
     return db_project
 
 # Add attribute
-@app.get("/projects/add_attribute", response_model=schemas.Project) #(requirement_text, attribute_name, project_id)
+@app.get("/projects/add_attribute", response_model=schemas.Attribute) #(requirement_text, attribute_name, project_id)
 def add_attribute_to_project(attribute_name:str,project_id:int,requirement_text:str,db: Session = Depends(get_db)):
     # traer el template por attribute name #filter
     db_template = crud.get_attribute_template_by_slug(db, slug=attribute_name)
