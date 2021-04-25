@@ -6,21 +6,23 @@ headers = {
     'Content-Type': 'application/json',
 }
 
+URL = "http://fastapi-testing1.herokuapp.com"
+
 def add_user(id_virtual_world,nombre):
     data = {"id_virtual_world":id_virtual_world,"nombre":nombre}
-    response = requests.post('http://fastapi-testing1.herokuapp.com/users/create', headers=headers, data=data)
+    response = requests.post(URL+'/users/create', headers=headers, data=data)
 
 def add_project(name,description):
     data = {"title":name,"description":description}
-    response = requests.post('http://fastapi-testing1.herokuapp.com/projects/create', headers=headers, data=json.dumps(data))
+    response = requests.post(URL+'/projects/create', headers=headers, data=json.dumps(data))
 
 def add_attribute_template(name, slug, description):
     data = {"name":name,"slug":slug,"description":description}
-    response = requests.post('http://fastapi-testing1.herokuapp.com/attribute_templates/create', headers=headers,  data=json.dumps(data))
+    response = requests.post(URL+'/attribute_templates/create', headers=headers,  data=json.dumps(data))
 
 def add_architecture_pattern(name,description):
     data = '{"title":"'+name+'","description":"'+description+'"}'
-    response = requests.post('http://fastapi-testing1.herokuapp.com/patterns/create', headers=headers, data=data)
+    response = requests.post(URL+'/patterns/create', headers=headers, data=data)
 
 def add_attribute(attribute,project_id,text):
     params = (
@@ -28,7 +30,7 @@ def add_attribute(attribute,project_id,text):
         ('project_id',project_id),
         ('requirement_text', text),
     )
-    response = requests.get('http://fastapi-testing1.herokuapp.com/projects/add_attribute', headers=headers, params=params)
+    response = requests.get(URL+'/projects/add_attribute', headers=headers, params=params)
 
 def add_pattern(pattern_id, project_id):
 
@@ -37,7 +39,7 @@ def add_pattern(pattern_id, project_id):
         ('project_id', project_id),
     )
 
-    response = requests.get('http://fastapi-testing1.herokuapp.com/projects/add_pattern', headers=headers, params=params)
+    response = requests.get(URL+'/projects/add_pattern', headers=headers, params=params)
 
 def seed():
     # Users
@@ -45,7 +47,7 @@ def seed():
 
     print("Agregando usuarios...")
     count = 1
-    for user in users_email:
+    for user in users:
         add_user(count,user)
         count=count+1
     
